@@ -1,3 +1,4 @@
+import platform
 import sys
 from argparse import Namespace
 from pathlib import Path
@@ -5,14 +6,14 @@ from pathlib import Path
 import pytest
 from yarl import URL
 
-from frage.config import Config, get_config, parse_args
+from frage.config import Config, get_default_dir, get_config, parse_args
 
 
 @pytest.fixture
 def expected_config() -> Config:
     return Config(
         request_name="/path/",
-        dir=None,
+        dir=get_default_dir(),
         base_url=None,
     )
 
@@ -21,7 +22,7 @@ def expected_config() -> Config:
 def expected_args(expected_config: Config) -> Namespace:
     return Namespace(
         name=expected_config.request_name,
-        dir=expected_config.dir,
+        dir=None,
         base_url=expected_config.base_url,
     )
 
@@ -29,6 +30,21 @@ def expected_args(expected_config: Config) -> Namespace:
 @pytest.fixture
 def base_args(expected_args: Namespace) -> list[str]:
     return [expected_args.name]
+
+
+class TestGetDefaultDir:
+    @pytest.mark.parametrize(
+        "platform_name,expected_value",
+        [
+            ("Darwin", Path.home() / ".frage/requests"),
+            ("Linux", Path.home() / ".frage/requests"),
+            ("Windows", Path.home() / "frage/requests"),
+            ("not_mapped", Path.home() / ".frage/requests"),
+        ],
+    )
+    def test__ok(self, monkeypatch, platform_name: str, expected_value: Path):
+        monkeypatch.setattr(platform, "system", lambda: platform_name)
+        assert get_default_dir() == expected_value
 
 
 class TestParseArgs:
