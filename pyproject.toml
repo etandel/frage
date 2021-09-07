@@ -1,9 +1,20 @@
 [tool.poetry]
 name = "frage"
-version = "0.1.0"
-description = ""
+version = "0.2.0"
+description = "Make pre-configured requests from the commandline"
 authors = ["Elias Tandel <elias.tandel@gmail.com>"]
-license = "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+license = "GPL-3.0-only"
+readme = "README.md"
+homepage = "https://github.com/etandel/frage"
+repository = "https://github.com/etandel/frage"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
