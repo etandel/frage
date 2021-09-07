@@ -3,7 +3,7 @@ name = "frage"
 version = "0.1.0"
 description = ""
 authors = ["Elias Tandel <elias.tandel@gmail.com>"]
-license = "GPL3"
+license = "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
 
 [tool.poetry.dependencies]
 python = "^3.9"
