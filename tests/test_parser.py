@@ -17,7 +17,7 @@ class TestParse:
     def test__ok(self):
         expected = Request(
             method=Method.POST,
-            path="/x/foo/bar",
+            path="x/foo/bar",
             headers={},
             body=b"a request body",
         )
