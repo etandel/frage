@@ -4,7 +4,7 @@ from typing import TextIO, Iterator
 
 import dhall
 
-from frage.models import Request
+from frage.models import RawRequest
 
 
 class ParsingError(Exception):
@@ -17,8 +17,8 @@ def open_file(dir_: Path, name: str) -> Iterator[TextIO]:
         yield f
 
 
-def parse(data: TextIO) -> Request:
+def parse(data: TextIO) -> RawRequest:
     try:
-        return Request.parse_obj(dhall.load(data))
+        return RawRequest.parse_obj(dhall.load(data))
     except Exception as e:
         raise ParsingError() from e

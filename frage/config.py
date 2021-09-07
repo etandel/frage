@@ -16,6 +16,7 @@ class Config(BaseModel):
     request_name: str
     base_url: Optional[URL]
     dir: Path
+    vars_: dict[str, str]
 
     class Config:
         arbitrary_types_allowed = True
@@ -27,6 +28,7 @@ def get_config(raw_args: Optional[Sequence[str]] = None) -> Config:
         request_name=args.name,
         base_url=args.base_url,
         dir=args.dir or get_default_dir(),
+        vars_=dict(s.split("=") for s in args.vars_),
     )
 
 
@@ -40,6 +42,9 @@ def parse_args(raw_args: Optional[Sequence[str]] = None):
     )
     parser.add_argument(
         "-d", "--dir", type=Path, help="Directory where request files will be searched"
+    )
+    parser.add_argument(
+        "vars_", metavar="vars", nargs="*", help="Variables to be substituted"
     )
 
     return parser.parse_args(raw_args)

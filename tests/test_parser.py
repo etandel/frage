@@ -4,7 +4,7 @@ from typing import TextIO
 
 import pytest
 
-from frage.models import Method, Request
+from frage.models import Method, RawRequest, Var
 from frage.parser import open_file, parse, ParsingError
 
 
@@ -46,11 +46,12 @@ class TestFindFile:
 
 class TestParse:
     def test__no_headers(self):
-        expected = Request(
+        expected = RawRequest(
+            variables=[],
             method=Method.POST,
             path="x/foo/bar",
             headers={},
-            body=b"a request body",
+            body="a request body",
         )
 
         with get_definition("valid_request_without_headers.dhall") as f:
@@ -59,17 +60,32 @@ class TestParse:
         assert got == expected
 
     def test__with_headers(self):
-        expected = Request(
+        expected = RawRequest(
+            variables=[],
             method=Method.POST,
             path="x/foo/bar",
             headers={
                 "x-header-1": "value-1",
                 "x-header-2": "value-2",
             },
-            body=b"a request body",
+            body="a request body",
         )
 
         with get_definition("valid_request_with_headers.dhall") as f:
+            got = parse(f)
+
+        assert got == expected
+
+    def test__with_variables(self):
+        expected = RawRequest(
+            variables=[Var(n="var1"), Var(n="var2")],
+            method=Method.POST,
+            path="x/foo/bar",
+            headers={},
+            body="a request body with var1 = {var1} and var2 = {var2}",
+        )
+
+        with get_definition("valid_request_with_vars.dhall") as f:
             got = parse(f)
 
         assert got == expected

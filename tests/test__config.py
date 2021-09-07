@@ -15,6 +15,7 @@ def expected_config() -> Config:
         request_name="/path/",
         dir=get_default_dir(),
         base_url=None,
+        vars_={},
     )
 
 
@@ -24,6 +25,7 @@ def expected_args(expected_config: Config) -> Namespace:
         name=expected_config.request_name,
         dir=None,
         base_url=expected_config.base_url,
+        vars_=[],
     )
 
 
@@ -48,6 +50,21 @@ class TestGetDefaultDir:
 
 
 class TestParseArgs:
+    def test__vars(self, base_args: list[str], expected_args: Namespace):
+        # without
+        got = parse_args(base_args)
+        assert got == expected_args
+
+        # with one
+        expected_args.vars_ = ["var1=val1"]
+        got = parse_args(base_args + expected_args.vars_)
+        assert got == expected_args
+
+        # with many
+        expected_args.vars_ = ["var1=val1", "var2=val2"]
+        got = parse_args(base_args + expected_args.vars_)
+        assert got == expected_args
+
     def test__base_url(self, base_args: list[str], expected_args: Namespace):
         # without
         got = parse_args(base_args)
@@ -82,6 +99,11 @@ class TestParseArgs:
 
 
 class TestGetConfig:
+    def test__vars(self, base_args: list[str], expected_config: Config):
+        vars_ = ["var1=val1", "var2=val2"]
+        expected_config.vars_ = {"var1": "val1", "var2": "val2"}
+        assert get_config(base_args + vars_) == expected_config
+
     def test__with_raw_args(self, base_args: list[str], expected_config: Config):
         assert get_config(base_args) == expected_config
 

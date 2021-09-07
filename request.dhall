@@ -11,6 +11,12 @@ let makeHeader = \(k : Text) -> \(v : Text) -> { mapKey = k, mapValue = v }
 
 let Body = Text
 
-let Request = { method : Method, path : Url, headers : Headers, body : Body }
+let Request =
+      { variables : List Text
+      , method : Method
+      , path : Url
+      , headers : Headers
+      , body : Body
+      }
 
 in  { Request, Method, Url, Headers, makeHeader, Body }

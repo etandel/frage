@@ -26,7 +26,7 @@ class TestIntegration:
         expected_body = "response body"
         name = "request "
         request_definition = """
-        { method = "GET", path = "/foo", headers = {=}, body = ""}
+        { variables = [] : List Text , method = "GET", path = "/foo", headers = [] : List {mapKey: Text, mapValue: Text} , body = ""}
         """
         request_filepath = tmp_path / f"{name}.dhall"
         request_filepath.write_text(request_definition)

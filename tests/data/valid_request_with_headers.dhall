@@ -1,6 +1,7 @@
 let Request = ./request.dhall
 
-in    { method = Request.Method.POST
+in    { variables = [] : List Text
+      , method = Request.Method.POST
       , path = "x/foo/bar"
       , headers =
         [ Request.makeHeader "x-header-1" "value-1"
