@@ -26,3 +26,6 @@ PYTESTARGS ?= -vv --tb=native --cov=$(MODULES) tests
 
 test:
 	$(RUNNER) pytest $(PYTESTARGS)
+
+publish:
+	poetry publish --build
