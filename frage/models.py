@@ -17,7 +17,7 @@ class Method(str, Enum):
 
 
 Headers = dict[str, str]
-Body = bytes
+Body = str
 
 
 class Request(BaseModel):

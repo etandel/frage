@@ -1,17 +1,10 @@
 import pytest
-from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from aiohttp import ClientSession
 from yarl import URL
 
 from frage.http import make_request
 from frage.models import Method, Request, Response
-
-
-@pytest.fixture
-def mockresponse():
-    with aioresponses() as m:
-        yield m
 
 
 @pytest.fixture

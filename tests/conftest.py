@@ -1,6 +1,7 @@
 import inspect
 
 import pytest
+from aioresponses import aioresponses
 
 
 def pytest_collection_modifyitems(session, config, items):
@@ -14,3 +15,8 @@ def pytest_collection_modifyitems(session, config, items):
         ):
             item.add_marker(pytest.mark.asyncio)
 
+
+@pytest.fixture
+def mockresponse():
+    with aioresponses() as m:
+        yield m
