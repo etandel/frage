@@ -1,16 +1,47 @@
 from io import StringIO
 from pathlib import Path
-from typing import IO
+from typing import TextIO
 
 import pytest
 
 from frage.models import Method, Request
-from frage.parser import parse, ParsingError
+from frage.parser import open_file, parse, ParsingError
 
 
-def get_definition(filename: str) -> IO:
+def get_definition(filename: str) -> TextIO:
     path = Path(__file__).parent / "data" / filename
     return path.open()
+
+
+class TestFindFile:
+    @pytest.fixture
+    def content(self) -> str:
+        return "{=}"
+
+    def test__root_file_found(self, tmp_path: Path, content: str):
+        path = tmp_path / "a_file.dhall"
+        path.write_text(content)
+
+        with open_file(tmp_path, "a_file") as got:
+            assert got.read() == content
+
+    def test__nested_file_found(self, tmp_path: Path, content: str):
+        base_dir = tmp_path / "nested"
+        base_dir.mkdir()
+
+        path = base_dir / "a_file.dhall"
+        path.write_text(content)
+
+        with open_file(tmp_path, "nested/a_file") as got:
+            assert got.read() == content
+
+    def test__file_not_found(self, tmp_path: Path, content: str):
+        path = tmp_path / "a_file.dhall"
+        path.write_text(content)
+
+        with pytest.raises(FileNotFoundError):
+            with open_file(tmp_path, "another_file"):
+                pass
 
 
 class TestParse:
