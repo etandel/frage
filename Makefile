@@ -4,6 +4,8 @@ MODULES ?= frage
 
 RUNNER ?= poetry run
 
+all: black-format check-all
+
 check-all: black-check linters test
 
 linters: mypy
