@@ -1,23 +1,16 @@
-let Method = < HEAD | OPTIONS | GET | POST | PUT | PATCH | DELETE | TRACE | CONNECT >
+let Map = https://prelude.dhall-lang.org/v15.0.0/Map/Type
+
+let Method =
+      < HEAD | OPTIONS | GET | POST | PUT | PATCH | DELETE | TRACE | CONNECT >
 
 let Url = Text
-let Headers = {}
+
+let Headers = Map Text Text
+
+let makeHeader = \(k : Text) -> \(v : Text) -> { mapKey = k, mapValue = v }
+
 let Body = Text
 
+let Request = { method : Method, path : Url, headers : Headers, body : Body }
 
-let Request = {
-  method : Method,
-  path: Url,
-  headers: Headers,
-  body: Body,
-}
-
-in 
-
-{
-  Request = Request,
-  Method = Method,
-  Url = Url,
-  Headers = Headers,
-  Body = Body,
-}
+in  { Request, Method, Url, Headers, makeHeader, Body }

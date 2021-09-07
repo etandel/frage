@@ -45,7 +45,7 @@ class TestFindFile:
 
 
 class TestParse:
-    def test__ok(self):
+    def test__no_headers(self):
         expected = Request(
             method=Method.POST,
             path="x/foo/bar",
@@ -53,7 +53,23 @@ class TestParse:
             body=b"a request body",
         )
 
-        with get_definition("valid_request.dhall") as f:
+        with get_definition("valid_request_without_headers.dhall") as f:
+            got = parse(f)
+
+        assert got == expected
+
+    def test__with_headers(self):
+        expected = Request(
+            method=Method.POST,
+            path="x/foo/bar",
+            headers={
+                "x-header-1": "value-1",
+                "x-header-2": "value-2",
+            },
+            body=b"a request body",
+        )
+
+        with get_definition("valid_request_with_headers.dhall") as f:
             got = parse(f)
 
         assert got == expected

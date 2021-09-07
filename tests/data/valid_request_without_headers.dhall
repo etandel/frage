@@ -1,11 +1,8 @@
 let Request = ./request.dhall
 
-let req
-    : Request.Request
-    = { method = Request.Method.POST
+in    { method = Request.Method.POST
       , path = "x/foo/bar"
-      , headers = {=}
+      , headers = [] : Request.Headers
       , body = "a request body"
       }
-
-in  req
+    : Request.Request
