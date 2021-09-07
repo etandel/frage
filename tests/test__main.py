@@ -69,33 +69,33 @@ class TestOutput:
         assert stream.read() == response.body
 
 
-class TestMain:
-    async def test__ok(self, capsys, tmp_path, monkeypatch, mockresponse):
+class TestIntegration:
+    @pytest.fixture
+    def setup_entry_point(self, tmp_path, monkeypatch, mockresponse) -> str:
+        expected_body = "response body"
+        name = "request "
         request_definition = """
         { method = "GET", path = "/foo", headers = {=}, body = ""}
         """
-        request_filepath = tmp_path / "request.dhall"
+        request_filepath = tmp_path / f"{name}.dhall"
         request_filepath.write_text(request_definition)
 
-        mockresponse.get("/foo", body="response body")
-        monkeypatch.setattr(sys, "argv", ["frage", str(request_filepath)])
+        mockresponse.get("/foo", body=expected_body)
+        monkeypatch.setattr(
+            sys,
+            "argv",
+            ["frage", name, "--dir", str(tmp_path)],
+        )
 
+        return expected_body
+
+
+    async def test__main(self, capsys, setup_entry_point):
         await main()
 
-        assert capsys.readouterr().out == "response body"
+        assert capsys.readouterr().out == setup_entry_point
 
-
-class TestRun:
-    def test__ok(self, capsys, tmp_path, monkeypatch, mockresponse):
-        request_definition = """
-        { method = "GET", path = "/foo", headers = {=}, body = ""}
-        """
-        request_filepath = tmp_path / "request.dhall"
-        request_filepath.write_text(request_definition)
-
-        mockresponse.get("/foo", body="response body")
-        monkeypatch.setattr(sys, "argv", ["frage", str(request_filepath)])
-
+    def test__run(self, capsys, setup_entry_point):
         run()
 
-        assert capsys.readouterr().out == "response body"
+        assert capsys.readouterr().out == setup_entry_point

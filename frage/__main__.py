@@ -9,7 +9,7 @@ from yarl import URL
 
 from frage.http import make_request
 from frage.models import Response
-from frage.parser import parse
+from frage.parser import open_file, parse
 
 
 def parse_args(raw_args: Optional[Sequence[str]] = None):
@@ -32,7 +32,7 @@ def output(response: Response, stream: IO):
 async def main():
     args = parse_args()
 
-    with open(args.request_file) as f:
+    with open_file(args.dir, args.request_file) as f:
         request = parse(f)
 
     async with ClientSession() as s:
