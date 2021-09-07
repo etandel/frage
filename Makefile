@@ -1,6 +1,6 @@
 .PHONY: test
 
-MODULES ?= frage
+MODULES ?= frage tests
 
 RUNNER ?= poetry run
 
@@ -11,18 +11,18 @@ check-all: black-check linters test
 linters: mypy
 
 black-format:
-	$(RUNNER) black $(MODULES) tests
+	$(RUNNER) black $(MODULES)
 
 black-check:
-	$(RUNNER) black --check $(MODULES) tests
+	$(RUNNER) black --check $(MODULES)
 
 flake8:
-	$(RUNNER) flake8 $(MODULES) tests
+	$(RUNNER) flake8 $(MODULES)
 
 mypy:
-	$(RUNNER) mypy --ignore-missing-imports --strict-optional $(MODULES) tests
+	$(RUNNER) mypy --ignore-missing-imports --strict-optional $(MODULES)
 
-PYTESTARGS ?= -vv --tb=native --cov=$(MODULES) tests
+PYTESTARGS ?= -vv --tb=native --cov=frage
 
 test:
 	$(RUNNER) pytest $(PYTESTARGS)
