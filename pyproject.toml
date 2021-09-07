@@ -9,6 +9,7 @@ license = "GPL3"
 python = "^3.9"
 aiohttp = "^3.7.4"
 dhall = "^0.1.7"
+pydantic = "^1.8.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
@@ -16,6 +17,8 @@ pytest-asyncio = "^0.15.1"
 pytest-cov = "^2.12.1"
 mypy = "^0.910"
 black = "^21.8b0"
+ipython = "^7.27.0"
+aioresponses = "^0.7.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
