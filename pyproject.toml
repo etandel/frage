@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "frage"
+version = "0.1.0"
+description = ""
+authors = ["Elias Tandel <elias.tandel@gmail.com>"]
+license = "GPL3"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+aiohttp = "^3.7.4"
+dhall = "^0.1.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+pytest-asyncio = "^0.15.1"
+pytest-cov = "^2.12.1"
+mypy = "^0.910"
+black = "^21.8b0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
