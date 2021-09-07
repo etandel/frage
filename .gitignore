@@ -3,6 +3,7 @@ __pycache__
 *.pyc
 .mypy_cache
 .pytest_cache
+.coverage
 
 # vim et al
 .*.sw?

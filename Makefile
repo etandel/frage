@@ -20,7 +20,7 @@ flake8:
 mypy:
 	$(RUNNER) mypy --ignore-missing-imports --strict-optional $(MODULES)
 
-PYTESTARGS ?= -vv --tb=native tests
+PYTESTARGS ?= -vv --tb=native --cov=$(MODULES) tests
 
 test:
 	$(RUNNER) pytest $(PYTESTARGS)
