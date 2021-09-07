@@ -1,6 +1,7 @@
 import sys
 import argparse
 import asyncio
+from pathlib import Path
 from typing import IO, Optional, Sequence
 
 from aiohttp import ClientSession
@@ -16,6 +17,9 @@ def parse_args(raw_args: Optional[Sequence[str]] = None):
     parser.add_argument("request_file", help="Dhall file with request definition")
     parser.add_argument(
         "-u", "--base-url", type=URL, help="Base URL to be joined with request path"
+    )
+    parser.add_argument(
+        "-d", "--dir", type=Path, help="Directory where request files will be searched"
     )
 
     return parser.parse_args(raw_args)

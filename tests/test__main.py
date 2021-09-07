@@ -1,6 +1,9 @@
 import sys
+from argparse import Namespace
+from pathlib import Path
 from io import StringIO
 
+import pytest
 from yarl import URL
 
 from frage.__main__ import main, output, parse_args, run
@@ -8,18 +11,49 @@ from frage.models import Response
 
 
 class TestParseArgs:
-    def test__with_base_url(self):
-        expected_request_file = "/path/"
-        expected_base_url = "https://foo"
-        got = parse_args([expected_request_file, "--base-url", expected_base_url])
-        assert got.request_file == expected_request_file
-        assert got.base_url == URL(expected_base_url)
+    @pytest.fixture
+    def expected_args(self) -> Namespace:
+        return Namespace(
+            request_file="/path/",
+            dir=None,
+            base_url=None,
+        )
 
-    def test__without_base_url(self):
-        expected_request_file = "/path/"
-        got = parse_args([expected_request_file])
-        assert got.request_file == expected_request_file
-        assert got.base_url is None
+    @pytest.fixture
+    def base_args(self, expected_args: Namespace) -> list[str]:
+        return [expected_args.request_file]
+
+    def test__base_url(self, base_args: list[str], expected_args: Namespace):
+        # without
+        got = parse_args(base_args)
+        assert got == expected_args
+
+        base_url = "https://foo"
+        expected_args.base_url = URL(base_url)
+
+        # with long
+        got = parse_args(base_args + ["--base-url", base_url])
+        assert got == expected_args
+
+        # with short
+        got = parse_args(base_args + ["-u", base_url])
+        assert got == expected_args
+
+    def test__request_dir(self, base_args: list[str], expected_args: Namespace):
+        # without
+        got = parse_args(base_args)
+        assert got == expected_args
+
+        dir_ = "/path/to/dir"
+        expected_args.dir = Path(dir_)
+
+        # with long
+        got = parse_args(base_args + ["--dir", dir_])
+        assert got == expected_args
+
+        # with short
+        got = parse_args(base_args + ["-d", dir_])
+        assert got == expected_args
 
 
 class TestOutput:
