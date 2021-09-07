@@ -12,13 +12,16 @@ class Method(str, Enum):
     PATCH = "PATCH"
     DELETE = "DELETE"
 
+    TRACE = "TRACE"
+    CONNECT = "CONNECT"
+
 
 Headers = dict[str, str]
 Body = bytes
 
 
 class Request(BaseModel):
-    path: AnyHttpUrl
+    path: str
     method: Method
     headers: Headers
     body: Body
