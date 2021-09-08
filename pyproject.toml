@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "frage"
-version = "0.2.0"
+version = "0.3.0"
 description = "Make pre-configured requests from the commandline"
 authors = ["Elias Tandel <elias.tandel@gmail.com>"]
 license = "GPL-3.0-only"
